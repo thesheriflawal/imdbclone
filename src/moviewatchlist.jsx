@@ -211,7 +211,9 @@ const MovieWatchlist = () => {
 
       {/* ////////////////////////////FOOTER//////////////////////////// */}
       <footer>
-        <small>© 2024 Sherif & team development. All rights reserved.</small>
+        <div>
+          <small>© 2024 Sherif & team development. All rights reserved.</small>
+        </div>
       </footer>
     </div>
   );
