@@ -197,6 +197,13 @@ span.title {
   gap: 2rem;
 }
 
+.dropdown-option::after {
+  content: "›";
+  display: inline-block;
+  transform: rotate(90deg);
+  margin-left: 5px;
+}
+
 .rating-details {
   display: flex;
   gap: 1rem;
@@ -240,4 +247,21 @@ span.rate {
   background-color: #ccc;
   margin: 20px 0;
   border-radius: 5px;
+}
+
+.addToWatchlist button {
+  background-color: var(--header-bg-color);
+  padding: 1rem;
+  border-radius: 1rem;
+  color: var(--color);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.movie-card-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
 }
