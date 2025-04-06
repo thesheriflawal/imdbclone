@@ -1,3 +1,4 @@
+// src/pages/Homepage.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import imdbLogo from "../assets/IMDB_Logo.png";
@@ -17,10 +18,12 @@ const Homepage = () => {
   const [genres, setGenres] = useState([]);
   const [user, setUser] = useState(null);
   const [watchlist, setWatchlist] = useState([]);
-  const [showModal, setShowModal] = useState(false); // State for showing modal
-  const [modalMessage, setModalMessage] = useState(""); // State for modal message
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const navigate = useNavigate();
+  const [credits, setCredits] = useState({});
 
+  // This useEffect fetches genres and sets up user and watchlist state
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -38,6 +41,7 @@ const Homepage = () => {
     setWatchlist(storedWatchlist);
   }, []);
 
+  // This useEffect fetches movies based on search query, genre, and rating
   useEffect(() => {
     const fetchMovies = () => {
       let apiUrl = `https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&page=1&sort_by=popularity.desc&api_key=a7f1f2e2e68c9c9b4cd85d8202407baf`;
@@ -63,6 +67,40 @@ const Homepage = () => {
     fetchMovies();
   }, [searchQuery, selectedGenre, minRating]);
 
+  // This useEffect fetches credits (directors and stars) for each movie and updates state
+  useEffect(() => {
+    const fetchAllCredits = async () => {
+      const creditsToFetch = movies.filter((movie) => !credits[movie.id]);
+
+      const creditPromises = creditsToFetch.map(async (movie) => {
+        try {
+          const response = await fetch(
+            `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=a7f1f2e2e68c9c9b4cd85d8202407baf`
+          );
+          const data = await response.json();
+          const director = data.crew.find((person) => person.job === "Director");
+          const stars = data.cast.slice(0, 2).map((actor) => actor.name).join(", ");
+
+          setCredits((prev) => ({
+            ...prev,
+            [movie.id]: {
+              director: director ? director.name : "Unknown",
+              stars: stars || "Unknown",
+            },
+          }));
+        } catch (error) {
+          console.error(`Error fetching credits for movie ${movie.id}:`, error);
+        }
+      });
+
+      await Promise.all(creditPromises);
+    };
+
+    if (movies.length > 0) {
+      fetchAllCredits();
+    }
+  }, [movies]);
+
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -76,7 +114,6 @@ const Homepage = () => {
 
   const addToWatchlist = (movieId) => {
     if (!user) {
-      // Show modal if user is not logged in
       setModalMessage("You must be logged in to add movies to the watchlist.");
       setShowModal(true);
       return;
@@ -94,11 +131,26 @@ const Homepage = () => {
   const closeModal = () => setShowModal(false);
   const redirectToSignup = () => {
     closeModal();
-    navigate("/auth"); // Redirect to the signup page
+    navigate("/auth");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/");
+  };
+
+  const goToWatchlist = () => {
+    navigate("/watchlist");
+  };
+
+  const goToMovieDetail = () => {
+    navigate("/movie-detail");
   };
 
   return (
     <div>
+      {/* ////////////////////////////NAV//////////////////////////// */}
       <header className="header">
         <img
           src={imdbLogo}
@@ -140,7 +192,7 @@ const Homepage = () => {
               />
             </li>
             <li>
-              <div className="watch-list">
+              <div className="watch-list" onClick={goToWatchlist}>
                 <img
                   src={watchList}
                   width="25px"
@@ -152,7 +204,7 @@ const Homepage = () => {
             </li>
             <li>
               {user ? (
-                <span>{user.username}</span>
+                <span> Hi, {user.username}</span>
               ) : (
                 <span className="sign-in-button" onClick={handleSignIn}>
                   Sign In
@@ -165,10 +217,18 @@ const Homepage = () => {
                 <span className="arrow-sign">&gt;</span>
               </div>
             </li>
+            {user && (
+              <li>
+                <span className="sign-in-button" onClick={handleLogout}>
+                  Log out
+                </span>
+              </li>
+            )}
           </ul>
         </nav>
       </header>
 
+      {/* ////////////////////////////HEADER//////////////////////////// */}
       <div className="movie-watchlist-header">
         <h1>Movies Watchlist</h1>
         <p>
@@ -181,6 +241,7 @@ const Homepage = () => {
         </ul>
       </div>
 
+      {/* ////////////////////////////MAIN//////////////////////////// */}
       <main>
         <div className="filters">
           <label htmlFor="genre">Genre:</label>
@@ -216,7 +277,9 @@ const Homepage = () => {
                         alt={movie.title}
                       />
                       <div className="namePlusRating">
-                        <span className="title">{`${index + 1}. ${movie.title}`}</span>
+                        <span className="title">{`${index + 1}. ${
+                          movie.title
+                        }`}</span>
                         <div className="yearPlusDuration">
                           <span className="year">{movie.release_date}</span>
                           <span className="duration">1h 25m</span>
@@ -259,61 +322,34 @@ const Homepage = () => {
                           alt="watchlist icon"
                         />
                         <span>
-                          {isInWatchlist(movie.id) ? "In Watchlist" : "Add To Watchlist"}
+                          {isInWatchlist(movie.id)
+                            ? "In Watchlist"
+                            : "Add to Watchlist"}
                         </span>
                       </button>
                     </div>
                   </div>
-                  <div className="i-circle">
-                    <img
-                      src={info}
-                      width="10px"
-                      className="info-icon"
-                      alt="info icon"
-                    />
+                  <div className="credits">
+                    <span className="director">Director: {credits[movie.id]?.director}</span>
+                    <span className="stars">Stars: {credits[movie.id]?.stars}</span>
                   </div>
                 </div>
-
-                <div className="movie-summary">
-                  <span>{movie.overview}</span>
-                </div>
-
-                <div className="directorsAndStars">
-                  <p>Directors</p>
-                  <span className="directors-name">
-                    <a href="#">Unknown</a>
-                  </span>
-                  <p>Stars</p>
-                  <span className="directors-name">
-                    <a href="#">Unknown</a>
-                  </span>
-                </div>
-
-                <div className="horizontal-rule"></div>
               </div>
             ))
           ) : (
-            <p>No movies found. Try a different search or filter!</p>
+            <p>No movies found. Try a differnt search or filter!</p>
           )}
         </div>
       </main>
 
-      {/* Modal for Custom Alert */}
+      {/* Modal */}
       {showModal && (
         <div className="modal">
-          <div className="modal-content">
-            <p>{modalMessage}</p>
-            <button onClick={redirectToSignup}>Go to Signup</button>
-            <button onClick={closeModal}>Close</button>
-          </div>
+          <p>{modalMessage}</p>
+          <button onClick={redirectToSignup}>Sign Up</button>
+          <button onClick={closeModal}>Close</button>
         </div>
       )}
-
-      <footer>
-        <div>
-          <small>© 2024 Sherif & team development. All rights reserved.</small>
-        </div>
-      </footer>
     </div>
   );
 };
