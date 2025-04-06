@@ -7,6 +7,15 @@ import navBar from "../assets/bars-solid.svg";
 import info from "../assets/info-solid.svg";
 import star from "../assets/star-regular.svg";
 import eyes from "../assets/eye-solid.svg";
+import tiktok from "../assets/tiktok-brands.svg";
+import instagram from "../assets/instagram-brands.svg";
+import twitter from "../assets/x-twitter-brands.svg";
+import youtube from "../assets/youtube-brands.svg";
+import facebook from "../assets/square-facebook-brands.svg";
+import qrcode from "../assets/qrcode-solid.svg";
+import toggleBtn from "../assets/toggle-on-solid.svg";
+import amazon from "../assets/amazon-brands.svg";
+import arrowLink from "../assets/arrow-up-right-from-square-solid.svg";
 import "../styles/Homepage.css";
 
 const Homepage = () => {
@@ -181,6 +190,8 @@ const Homepage = () => {
         </ul>
       </div>
 
+      <div className="popup-bg"></div>
+
       <main>
         <div className="filters">
           <label htmlFor="genre">Genre:</label>
@@ -216,15 +227,21 @@ const Homepage = () => {
                         alt={movie.title}
                       />
                       <div className="namePlusRating">
-                        <span className="title">{`${index + 1}. ${movie.title}`}</span>
+                        <span className="title">{`${index + 1}. ${
+                          movie.title
+                        }`}</span>
                         <div className="yearPlusDuration">
                           <span className="year">{movie.release_date}</span>
                           <span className="duration">1h 25m</span>
                           <span>R</span>
                         </div>
                         <div className="rating-details">
-                          <span className="rating">{`⭐️ ${movie.vote_average}`}</span>
-                          <span className="views">{`(${movie.popularity})`}</span>
+                          <span className="rating">{`⭐️ ${movie.vote_average.toFixed(
+                            1
+                          )}`}</span>
+                          <span className="views">{`(${movie.popularity.toFixed(
+                            1
+                          )})`}</span>
                           <span className="rate">
                             <img
                               src={star}
@@ -259,7 +276,9 @@ const Homepage = () => {
                           alt="watchlist icon"
                         />
                         <span>
-                          {isInWatchlist(movie.id) ? "In Watchlist" : "Add To Watchlist"}
+                          {isInWatchlist(movie.id)
+                            ? "In Watchlist"
+                            : "Add To Watchlist"}
                         </span>
                       </button>
                     </div>
@@ -311,7 +330,102 @@ const Homepage = () => {
 
       <footer>
         <div>
-          <small>© 2024 Sherif & team development. All rights reserved.</small>
+          <button className="sign-in-access">Sign in for more access</button>
+          <div className="imdb-social-download-link">
+            <div className="footer-socials">
+              <div className="socials">
+                <p>Follow IMDB on social</p>
+                <div className="social-icons">
+                  <a href="#">
+                    <img
+                      src={tiktok}
+                      width="10px"
+                      className="info-icon"
+                      alt="tiktok icon"
+                    />
+                  </a>
+                  <a href="#">
+                    <img
+                      src={instagram}
+                      width="10px"
+                      className="info-icon"
+                      alt="instagram icon"
+                    />
+                  </a>
+                  <a href="#">
+                    <img
+                      src={twitter}
+                      width="10px"
+                      className="info-icon"
+                      alt="twitter icon"
+                    />
+                  </a>
+                  <a href="#">
+                    <img
+                      src={youtube}
+                      width="10px"
+                      className="info-icon"
+                      alt="youtube icon"
+                    />
+                  </a>
+                  <a href="#">
+                    <img
+                      src={facebook}
+                      width="10px"
+                      className="info-icon"
+                      alt="facebook icon"
+                    />
+                  </a>
+                </div>
+              </div>
+              <div className="qrcode">
+                <div className="qr-code-details">
+                  <p>Get the IMDb app</p>
+                  <span>For Android and IOS</span>
+                </div>
+                <img src={qrcode} className="info-icon" alt="youtube icon" />
+              </div>
+            </div>
+          </div>
+          <div className="page-links">
+            <a href="#">
+              Help <img src={arrowLink} width="10px" alt="" />
+            </a>
+            <a href="#">
+              Site Index <img src={arrowLink} width="10px" alt="" />
+            </a>
+            <a href="#">
+              IMDbPro <img src={arrowLink} width="10px" alt="" />
+            </a>
+            <a href="#">
+              Box Office Mojo <img src={arrowLink} width="10px" alt="" />
+            </a>
+            <a href="#">
+              License IMDb Data <img src={arrowLink} width="10px" alt="" />
+            </a>
+            <a href="#">Press Room</a>
+            <a href="#">
+              Advertising <img src={arrowLink} width="10px" alt="" />
+            </a>
+            <a href="#">
+              Jobs <img src={arrowLink} width="10px" alt="" />
+            </a>
+            <a href="#">Conditions of Use</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">
+              <img src={toggleBtn} width="20px" alt="" /> Your Ads Privacy
+              Choices
+            </a>
+          </div>
+          <div className="footer-ending">
+            <p>
+              an <img src={amazon} width="10px" alt="" />
+              mazon company
+            </p>
+            <small>
+              © 2024 Sherif & team development. All rights reserved.
+            </small>
+          </div>
         </div>
       </footer>
     </div>
