@@ -1,4 +1,4 @@
-/* .auth-wrapper {
+.auth-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -170,4 +170,4 @@
   .toggle-form button:hover {
     text-decoration: underline;
   }
-   */
+  
