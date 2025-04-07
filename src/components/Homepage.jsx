@@ -17,6 +17,7 @@ import toggleBtn from "../assets/toggle-on-solid.svg";
 import amazon from "../assets/amazon-brands.svg";
 import arrowLink from "../assets/arrow-up-right-from-square-solid.svg";
 import "../styles/Homepage.css";
+import Modal from "./modal/modal.jsx";
 
 const Homepage = () => {
   const [movies, setMovies] = useState([]);
@@ -283,14 +284,7 @@ const Homepage = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="i-circle">
-                    <img
-                      src={info}
-                      width="10px"
-                      className="info-icon"
-                      alt="info icon"
-                    />
-                  </div>
+                  <Modal movie={movie} />
                 </div>
 
                 <div className="movie-summary">

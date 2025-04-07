@@ -1,4 +1,4 @@
-.auth-wrapper {
+/* .auth-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -79,7 +79,6 @@
   font-size: 0.9rem;
   color: #ff9999;
 }
-/* Styling for the authentication form */
 .auth-container {
     display: flex;
     justify-content: center;
@@ -171,4 +170,4 @@
   .toggle-form button:hover {
     text-decoration: underline;
   }
-  
+   */
