@@ -387,3 +387,126 @@ footer {
 .filters {
   margin: 2rem;
 }
+
+.dropbtn {
+  background-color: #e4b720;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+
+/* li.nav-menu {
+  display: none;
+} */
+
+.nav-wrapper {
+  display: flex;
+  gap: 2rem;
+}
+
+@media screen and (min-width: 1192px) {
+  .nav-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .nav-wrapper li {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+
+@media screen and (max-width: 702px) {
+  .search-container input {
+    width: 5rem;
+    /* display: none; */
+  }
+
+  header.header {
+    gap: 1rem;
+    /* display: none; */
+  }
+
+  .movie-watchlist-header h1 {
+    font-size: 2rem;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .footer-socials {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .movie-card-container {
+    display: flex;
+    flex-direction: column;
+    /* margin-bottom: 1rem; */
+  }
+
+  .namePlusRating {
+    display: flex;
+    flex-direction: column;
+    gap: none;
+  }
+
+  .card .yearPlusDuration {
+    display: flex;
+    gap: 1px;
+  }
+
+  .rating-details {
+    display: flex;
+    gap: 1px;
+  }
+
+  .card .rating-details {
+    gap: 2px;
+  }
+
+  .movie-card {
+    margin-bottom: 1rem;
+  }
+}

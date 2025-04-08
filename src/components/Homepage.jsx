@@ -18,8 +18,12 @@ import amazon from "../assets/amazon-brands.svg";
 import arrowLink from "../assets/arrow-up-right-from-square-solid.svg";
 import "../styles/Homepage.css";
 import Modal from "./modal/modal.jsx";
+import { useTranslation } from "react-i18next";
 
 const Homepage = () => {
+  const { t, i18n } = useTranslation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const [movies, setMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
@@ -84,6 +88,10 @@ const Homepage = () => {
 
   const handleSignIn = () => navigate("/auth");
 
+  const handleMenuToggle = () => {
+    setMenuOpen((prev) => !prev);
+  };
+
   const addToWatchlist = (movieId) => {
     if (!user) {
       // Show modal if user is not logged in
@@ -117,9 +125,77 @@ const Homepage = () => {
           className="nav-logo"
           alt="imdb logo"
         />
-        <nav>
+        <nav className="homepage-nav-nav">
           <ul>
             <li>
+              <form onSubmit={handleSearchSubmit} className="search-container">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  placeholder={t("search_placeholder")}
+                />
+                <button type="submit">🔍</button>
+              </form>
+            </li>
+
+            {/* Toggleable nav-wrapper */}
+            <div
+              className="nav-wrapper"
+              style={{ display: menuOpen ? "block" : "none" }}
+            >
+              <li>
+                <img
+                  src={imdbPro}
+                  width="60px"
+                  className="nav-logo"
+                  alt="imdb pro logo"
+                />
+              </li>
+              <li>
+                <div className="watch-list">
+                  <img
+                    src={watchList}
+                    width="25px"
+                    className="nav-logo"
+                    alt="watchlist icon"
+                  />
+                  <span>{t("watchlist")}</span>
+                </div>
+              </li>
+              <li>
+                {user ? (
+                  <span>{user.username}</span>
+                ) : (
+                  <span className="sign-in-button" onClick={handleSignIn}>
+                    {t("sign_in")}
+                  </span>
+                )}
+              </li>
+              <li>
+                <div className="dropdown lang">
+                  <button className="dropbtn">{t("language")}</button>
+                  <div className="dropdown-content">
+                    <a href="#" onClick={() => i18n.changeLanguage("en")}>
+                      {t("english")}
+                    </a>
+                    <a href="#" onClick={() => i18n.changeLanguage("fr")}>
+                      {t("french")}
+                    </a>
+                    <a href="#" onClick={() => i18n.changeLanguage("es")}>
+                      {t("spanish")}
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </div>
+
+            {/* Toggle button */}
+            <li
+              className="nav-menu"
+              style={{ display: menuOpen ? "none" : "block" }}
+              onClick={handleMenuToggle}
+            >
               <div className="menu">
                 <img
                   src={navBar}
@@ -127,52 +203,7 @@ const Homepage = () => {
                   className="nav-logo"
                   alt="menu icon"
                 />
-                <span>Menu</span>
-              </div>
-            </li>
-            <li>
-              <form onSubmit={handleSearchSubmit} className="search-container">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  placeholder="Search movies..."
-                />
-                <button type="submit">🔍</button>
-              </form>
-            </li>
-            <li>
-              <img
-                src={imdbPro}
-                width="60px"
-                className="nav-logo"
-                alt="imdb pro logo"
-              />
-            </li>
-            <li>
-              <div className="watch-list">
-                <img
-                  src={watchList}
-                  width="25px"
-                  className="nav-logo"
-                  alt="watchlist icon"
-                />
-                <span>Watchlist</span>
-              </div>
-            </li>
-            <li>
-              {user ? (
-                <span>{user.username}</span>
-              ) : (
-                <span className="sign-in-button" onClick={handleSignIn}>
-                  Sign In
-                </span>
-              )}
-            </li>
-            <li>
-              <div className="lang">
-                <span>En</span>
-                <span className="arrow-sign">&gt;</span>
+                <span>{t("menu")}</span>
               </div>
             </li>
           </ul>
