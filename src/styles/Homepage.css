@@ -176,13 +176,13 @@ main {
   justify-self: center;
 }
 
-.movie-details {
+.card .movie-details {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.movie-card {
+.card .movie-card {
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -192,44 +192,44 @@ span.title {
   font-weight: 800;
 }
 
-.yearPlusDuration {
+.card .yearPlusDuration {
   display: flex;
   gap: 2rem;
 }
 
-.dropdown-option::after {
+.card .dropdown-option::after {
   content: "›";
   display: inline-block;
   transform: rotate(90deg);
   margin-left: 5px;
 }
 
-.rating-details {
+.card .rating-details {
   display: flex;
   gap: 1rem;
 }
 
-.rating-details span {
+.card .rating-details span {
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
 
-.movie-summary {
+.card .movie-summary {
   margin-top: 1rem;
 }
 
-.directorsAndStars {
+.card .directorsAndStars {
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
 }
 
-.directorsAndStars p {
+.card .directorsAndStars p {
   font-weight: 700;
 }
 
-.directorsAndStars span {
+.card .directorsAndStars span {
   display: flex;
   gap: 1rem;
 }
@@ -249,7 +249,7 @@ span.rate {
   border-radius: 5px;
 }
 
-.addToWatchlist button {
+.card .addToWatchlist button {
   background-color: var(--header-bg-color);
   padding: 1rem;
   border-radius: 1rem;
@@ -259,7 +259,7 @@ span.rate {
   gap: 1rem;
 }
 
-.movie-card-container {
+.card .movie-card-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
