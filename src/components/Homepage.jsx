@@ -84,17 +84,11 @@ const Homepage = () => {
 
   const handleSignIn = () => navigate("/auth");
 
-  const addToWatchlist = (movieId) => {
-    if (!user) {
-      // Show modal if user is not logged in
-      setModalMessage("You must be logged in to add movies to the watchlist.");
-      setShowModal(true);
-      return;
-    }
-
-    if (watchlist.includes(movieId)) return;
-
-    const updatedWatchlist = [...watchlist, movieId];
+  const addToWatchlist = (movie) => {
+    console.log("Adding movie to watchlist:", movie); // Debugging log
+    if (watchlist.some((item) => item.id === movie.id)) return;
+  
+    const updatedWatchlist = [...watchlist, movie];
     setWatchlist(updatedWatchlist);
     localStorage.setItem("watchlist", JSON.stringify(updatedWatchlist));
   };
@@ -150,15 +144,15 @@ const Homepage = () => {
               />
             </li>
             <li>
-              <div className="watch-list">
+            <div className="watch-list" onClick={() => navigate("/watchlist")}>
                 <img
                   src={watchList}
-                  width="25px"
-                  className="nav-logo"
-                  alt="watchlist icon"
-                />
+                   width="25px"
+                   className="nav-logo"
+                   alt="watchlist icon"
+                  />
                 <span>Watchlist</span>
-              </div>
+            </div>
             </li>
             <li>
               {user ? (
@@ -269,7 +263,7 @@ const Homepage = () => {
                       </div>
                     </div>
                     <div className="addToWatchlist">
-                      <button onClick={() => addToWatchlist(movie.id)}>
+                      <button onClick={() => addToWatchlist(movie)}>
                         <img
                           src={watchList}
                           width="25px"
@@ -277,7 +271,7 @@ const Homepage = () => {
                           alt="watchlist icon"
                         />
                         <span>
-                          {isInWatchlist(movie.id)
+                          {isInWatchlist(movie)
                             ? "In Watchlist"
                             : "Add To Watchlist"}
                         </span>
