@@ -11,6 +11,7 @@ import "./index.css";
 
 const MovieWatchlist = () => {
   const [movies, setMovies] = useState([]);
+  const [watchlist, setWatchlist] = useState([]);
 
   const getMovie = () => {
     fetch(
@@ -28,6 +29,14 @@ const MovieWatchlist = () => {
     console.log("Component mounted");
     getMovie();
   }, []);
+
+  const addToWatchlist = (movie) => {
+    if (!watchlist.some((item) => item.id === movie.id)) {
+      setWatchlist([...watchlist, movie]);
+    } else {
+      alert("This movie is already in your watchlist!");
+    }
+  };
 
   return (
     <div>
@@ -88,7 +97,7 @@ const MovieWatchlist = () => {
                   className="nav-logo"
                   alt="watchlist icon"
                 />
-                <span>Watchlist</span>
+                <span>Watchlist ({watchlist.length})</span>
               </div>
             </li>
 
@@ -167,7 +176,7 @@ const MovieWatchlist = () => {
                     </div>
                   </div>
                   <div className="addToWatchlist">
-                    <button>
+                    <button onClick={() => addToWatchlist(movie)}>
                       <img
                         src={watchList}
                         width="25px"
@@ -206,6 +215,22 @@ const MovieWatchlist = () => {
               <div className="horizontal-rule"></div>
             </div>
           ))}
+        </div>
+
+        {/* Watchlist Section */}
+        <div className="watchlist-section">
+          <h2>Your Watchlist</h2>
+          {watchlist.length === 0 ? (
+            <p>No movies in your watchlist yet.</p>
+          ) : (
+            <ul>
+              {watchlist.map((movie) => (
+                <li key={movie.id}>
+                  {movie.title} ({movie.release_date})
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </main>
 
