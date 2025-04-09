@@ -1,0 +1,1 @@
+//to call the watchlist in the app.jsx "<Route path="/watchlist" element={<Watchlist />} />"

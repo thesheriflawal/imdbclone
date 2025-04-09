@@ -34,6 +34,7 @@ const Homepage = () => {
   const [showModal, setShowModal] = useState(false); // State for showing modal
   const [modalMessage, setModalMessage] = useState(""); // State for modal message
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -86,8 +87,14 @@ const Homepage = () => {
   const handleGenreChange = (e) => setSelectedGenre(e.target.value);
   const handleRatingChange = (e) => setMinRating(e.target.value);
 
-  const handleSignIn = () => navigate("/auth");
-
+  const handleSignIn = () => navigate("/auth")
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+  
   const handleMenuToggle = () => {
     setMenuOpen((prev) => !prev);
   };
@@ -115,35 +122,92 @@ const Homepage = () => {
     navigate("/auth"); // Redirect to the signup page
   };
 
+  const goToWatchlist = () => {
+    navigate("/watchlist");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/auth");
+  };
+
+  const rateMovie = (movieId, rating) => {
+    if (!user) {
+      setModalMessage("You must be logged in to rate movies.");
+      setShowModal(true);
+      return;
+    }
+
+    // Handle rating logic here, like storing it in localStorage or calling an API
+    const updatedMovies = movies.map((movie) => {
+      if (movie.id === movieId) {
+        return { ...movie, userRating: rating }; // Add userRating to the movie object
+      }
+      return movie;
+    });
+    setMovies(updatedMovies);
+  };
+
+  const [watchedMovies, setWatchedMovies] = useState([]);
+
+  const markAsWatched = (movieId) => {
+    if (!user) {
+      setModalMessage("You must be logged in to mark movies as watched.");
+      setShowModal(true);
+      return;
+    }
+
+    const updatedWatchedMovies = watchedMovies.includes(movieId)
+      ? watchedMovies.filter((id) => id !== movieId)
+      : [...watchedMovies, movieId];
+
+    setWatchedMovies(updatedWatchedMovies);
+    localStorage.setItem("watchedMovies", JSON.stringify(updatedWatchedMovies));
+  };
+
   return (
     <div>
       <header className="header">
-        <img
-          src={imdbLogo}
-          width="100px"
-          height="60px"
-          className="nav-logo"
-          alt="imdb logo"
-        />
-        <nav className="homepage-nav-nav">
-          <ul>
-            <li>
-              <form onSubmit={handleSearchSubmit} className="search-container">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  placeholder={t("search_placeholder")}
-                />
-                <button type="submit">🔍</button>
-              </form>
-            </li>
+        {/*/////////////////DESKTOP HEADER////////////*/}
+        <div className="desktop-header">
+          <img
+            src={imdbLogo}
+            width="100px"
+            height="60px"
+            className="nav-logo"
+            alt="imdb logo"
+          />
 
-            {/* Toggleable nav-wrapper */}
-            <div
-              className="nav-wrapper"
-              style={{ display: menuOpen ? "block" : "none" }}
-            >
+          <nav>
+            <ul>
+              {/*} <li>
+        <div className="menu">
+          <img
+            src={navBar}
+            width="20px"
+            className="nav-logo"
+            alt="menu icon"
+          />
+          <span>Menu</span>
+        </div>
+      </li>*/}
+
+              <li>
+                <form
+                  onSubmit={handleSearchSubmit}
+                  className="search-container"
+                >
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    placeholder="Search movies..."
+                  />
+                  <button type="submit">🔍</button>
+                </form>
+              </li>
+
               <li>
                 <img
                   src={imdbPro}
@@ -152,29 +216,32 @@ const Homepage = () => {
                   alt="imdb pro logo"
                 />
               </li>
+
               <li>
-                <div className="watch-list">
+                <div className="watch-list" onClick={goToWatchlist}>
                   <img
                     src={watchList}
                     width="25px"
                     className="nav-logo"
                     alt="watchlist icon"
                   />
-                  <span>{t("watchlist")}</span>
+                  <span>Watchlist</span>
                 </div>
               </li>
+
               <li>
                 {user ? (
-                  <span>{user.username}</span>
+                  <span>Hi, {user.username || user.name}</span>
                 ) : (
                   <span className="sign-in-button" onClick={handleSignIn}>
-                    {t("sign_in")}
+                    Sign In
                   </span>
                 )}
               </li>
+
               <li>
                 <div className="dropdown lang">
-                  <button className="dropbtn">{t("language")}</button>
+                  <button className="dropbtn">{t("En")}</button>
                   <div className="dropdown-content">
                     <a href="#" onClick={() => i18n.changeLanguage("en")}>
                       {t("english")}
@@ -188,26 +255,114 @@ const Homepage = () => {
                   </div>
                 </div>
               </li>
-            </div>
 
-            {/* Toggle button */}
-            <li
-              className="nav-menu"
-              style={{ display: menuOpen ? "none" : "block" }}
-              onClick={handleMenuToggle}
-            >
-              <div className="menu">
-                <img
-                  src={navBar}
-                  width="20px"
-                  className="nav-logo"
-                  alt="menu icon"
-                />
-                <span>{t("menu")}</span>
+              {user && (
+                <li>
+                  <span className="sign-in-button" onClick={handleLogout}>
+                    Log out
+                  </span>
+                </li>
+              )}
+            </ul>
+          </nav>
+        </div>
+
+        {/*/////////////////MOBILE HEADER////////////*/}
+        <div className="hamburger" onClick={handleMenuToggle}>
+          <img
+            src={imdbLogo}
+            width="100px"
+            height="60px"
+            className="nav-logo"
+            alt="imdb logo"
+          />
+          <nav className="homepage-nav-nav">
+            <ul>
+              <li>
+                <form
+                  onSubmit={handleSearchSubmit}
+                  className="search-container"
+                >
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    placeholder={t("search_placeholder")}
+                  />
+                  <button type="submit">🔍</button>
+                </form>
+              </li>
+
+              {/* Toggleable nav-wrapper */}
+              <div
+                className="nav-wrapper"
+                style={{ display: menuOpen ? "block" : "none" }}
+              >
+                <li>
+                  <img
+                    src={imdbPro}
+                    width="60px"
+                    className="nav-logo"
+                    alt="imdb pro logo"
+                  />
+                </li>
+                <li>
+                  <div className="watch-list">
+                    <img
+                      src={watchList}
+                      width="25px"
+                      className="nav-logo"
+                      alt="watchlist icon"
+                    />
+                    <span>{t("watchlist")}</span>
+                  </div>
+                </li>
+                <li>
+                  {user ? (
+                    <span>{user.username || user.name}</span>
+                  ) : (
+                    <span className="sign-in-button" onClick={handleSignIn}>
+                      {t("sign_in")}
+                    </span>
+                  )}
+                </li>
+                <li>
+                  <div className="dropdown lang">
+                    <button className="dropbtn">{t("language")}</button>
+                    <div className="dropdown-content">
+                      <a href="#" onClick={() => i18n.changeLanguage("en")}>
+                        {t("english")}
+                      </a>
+                      <a href="#" onClick={() => i18n.changeLanguage("fr")}>
+                        {t("french")}
+                      </a>
+                      <a href="#" onClick={() => i18n.changeLanguage("es")}>
+                        {t("spanish")}
+                      </a>
+                    </div>
+                  </div>
+                </li>
               </div>
-            </li>
-          </ul>
-        </nav>
+
+              {/* Toggle button */}
+              <li
+                className="nav-menu"
+                style={{ display: menuOpen ? "none" : "block" }}
+                onClick={handleMenuToggle}
+              >
+                <div className="menu">
+                  <img
+                    src={navBar}
+                    width="20px"
+                    className="nav-logo"
+                    alt="menu icon"
+                  />
+                  <span>{t("menu")}</span>
+                </div>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </header>
 
       <div className="movie-watchlist-header">
@@ -271,18 +426,15 @@ const Homepage = () => {
                           <span className="rating">{`⭐️ ${movie.vote_average.toFixed(
                             1
                           )}`}</span>
-                          <span className="views">{`(${movie.popularity.toFixed(
-                            1
-                          )})`}</span>
                           <span className="rate">
-                            <img
-                              src={star}
-                              width="10px"
-                              className="info-icon"
-                              alt="rate icon"
-                            />{" "}
                             <button onClick={() => rateMovie(movie.id, 8)}>
-                              Rate 8
+                              <img
+                                src={star}
+                                width="10px"
+                                className="info-icon"
+                                alt="rate icon"
+                              />{" "}
+                              Rate
                             </button>
                           </span>
                           <span className="watched">
@@ -293,7 +445,9 @@ const Homepage = () => {
                               alt="watched icon"
                             />{" "}
                             <button onClick={() => markAsWatched(movie.id)}>
-                              Mark as watched
+                              {watchedMovies.includes(movie.id)
+                                ? "Unmark as watched"
+                                : "Mark as watched"}
                             </button>
                           </span>
                         </div>

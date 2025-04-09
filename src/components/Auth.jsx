@@ -13,6 +13,8 @@ const Auth = () => {
     password: "",
     confirmPassword: "",
   });
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -27,12 +29,45 @@ const Auth = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isSignup && formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
+
+    if (isSignup) {
+      // Check if user already exists (based on email)
+      const existingUser = JSON.parse(localStorage.getItem(formData.email));
+      if (existingUser) {
+        // Show modal if user exists
+        setModalMessage("This email is already registered. Please log in.");
+        setModalVisible(true);
+        return;
+      }
+
+      // Validate passwords match
+      if (formData.password !== formData.confirmPassword) {
+        setModalMessage("Passwords do not match!");
+        setModalVisible(true);
+        return;
+      }
+
+      // Save user to local storage
+      localStorage.setItem(formData.email, JSON.stringify(formData));
+      setModalMessage("Signup successful!");
+      setModalVisible(true);
+      navigate("/");
+    } else {
+      // If user is logging in, check if user exists
+      const existingUser = JSON.parse(localStorage.getItem(formData.email));
+      if (existingUser && existingUser.password === formData.password) {
+        setModalMessage("Login successful!");
+        setModalVisible(true);
+        navigate("/");
+      } else {
+        setModalMessage("Invalid credentials or user not found.");
+        setModalVisible(true);
+      }
     }
-    alert(`${isSignup ? "Signup" : "Login"} successful`);
-    navigate("/");
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
   };
 
   return (
@@ -120,6 +155,16 @@ const Auth = () => {
           </button>
         </div>
       </div>
+
+      {/* 👇 Modal for Alerts */}
+      {modalVisible && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <p>{modalMessage}</p>
+            <button onClick={closeModal}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
