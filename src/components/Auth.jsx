@@ -1,19 +1,35 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import "../styles/Auth.css"; // Ensure this file includes styling
 
 const Auth = () => {
   const [isSignup, setIsSignup] = useState(true); // Toggle between signup/login
   const [showPassword, setShowPassword] = useState(false); // Show password state
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Show confirm password state
+=======
+import GoogleAuth from "../GoogleAuth";
+import "../styles/Auth.css";
+
+const Auth = () => {
+  const [isSignup, setIsSignup] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+>>>>>>> 219974154f78661f680e491d6d7402eb9e036266
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
+<<<<<<< HEAD
     confirmPassword: "", // Used for signup only
   });
   const [modalMessage, setModalMessage] = useState(""); // Modal message state
   const [modalType, setModalType] = useState(""); // 'success' or 'error' for modal type
+=======
+    confirmPassword: "",
+  });
+
+>>>>>>> 219974154f78661f680e491d6d7402eb9e036266
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -22,6 +38,7 @@ const Auth = () => {
   };
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
+<<<<<<< HEAD
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword((prev) => !prev);
 
   const handleSubmit = (e) => {
@@ -67,14 +84,33 @@ const Auth = () => {
   const toggleForm = () => {
     setIsSignup((prev) => !prev); // Toggle between Signup and Login
     setModalMessage(""); // Reset modal message when switching forms
+=======
+  const toggleConfirmPasswordVisibility = () =>
+    setShowConfirmPassword((prev) => !prev);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isSignup && formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+    alert(`${isSignup ? "Signup" : "Login"} successful`);
+    navigate("/");
+>>>>>>> 219974154f78661f680e491d6d7402eb9e036266
   };
 
   return (
     <div className="auth-container">
       <div className="auth-form">
+<<<<<<< HEAD
         <h2>{isSignup ? "Sign Up" : "Log In"}</h2>
 
         {/* Form to input data */}
+=======
+        <h2>{isSignup ? "Sign Up" : "Sign In"}</h2>
+
+        {/* 👇 Email/Password Form */}
+>>>>>>> 219974154f78661f680e491d6d7402eb9e036266
         <form onSubmit={handleSubmit}>
           {isSignup && (
             <div className="form-group">
@@ -88,7 +124,10 @@ const Auth = () => {
               />
             </div>
           )}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 219974154f78661f680e491d6d7402eb9e036266
           <div className="form-group">
             <label>Email</label>
             <input
@@ -99,7 +138,10 @@ const Auth = () => {
               required
             />
           </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 219974154f78661f680e491d6d7402eb9e036266
           <div className="form-group">
             <label>Password</label>
             <div className="password-container">
@@ -115,7 +157,10 @@ const Auth = () => {
               </span>
             </div>
           </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 219974154f78661f680e491d6d7402eb9e036266
           {isSignup && (
             <div className="form-group">
               <label>Confirm Password</label>
@@ -136,15 +181,31 @@ const Auth = () => {
               </div>
             </div>
           )}
+<<<<<<< HEAD
 
           <button className="btn" type="submit">{isSignup ? "Sign Up" : "Log In"}</button>
         </form>
 
         {/* Toggle between Login and Signup */}
+=======
+          <button className="btn" type="submit">
+            {isSignup ? "Sign Up" : "Sign In"}
+          </button>
+        </form>
+
+        {/* 👇 Divider */}
+        <div className="divider">OR</div>
+
+        {/* 👇 Google Auth Button */}
+        <GoogleAuth />
+
+        {/* 👇 Toggle Sign In/Sign Up */}
+>>>>>>> 219974154f78661f680e491d6d7402eb9e036266
         <div className="toggle-form">
           <span>
             {isSignup ? "Already have an account?" : "Don't have an account?"}
           </span>
+<<<<<<< HEAD
           <button onClick={toggleForm}>
             {isSignup ? "Log In" : "Sign Up"}
           </button>
@@ -165,6 +226,13 @@ const Auth = () => {
           </div>
         </div>
       )}
+=======
+          <button onClick={() => setIsSignup((prev) => !prev)}>
+            {isSignup ? "Login" : "Sign Up"}
+          </button>
+        </div>
+      </div>
+>>>>>>> 219974154f78661f680e491d6d7402eb9e036266
     </div>
   );
 };

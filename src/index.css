@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -138,17 +138,13 @@
 }
 
 .info-icon {
-  /* color: #002b5f; */
   height: 1rem;
   width: 1rem;
-  /* padding: 10px; */
-  /* background-color: none; */
 }
 
 .i-circle {
   padding: 0.7rem;
   border: 1px solid var(--header-bg-color);
-  /* padding: 1rem; */
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -264,4 +260,4 @@ span.rate {
   justify-content: space-between;
   align-items: center;
   width: 90%;
-}
+} */
