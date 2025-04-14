@@ -106,7 +106,7 @@ const MovieWatchlist = () => {
         </nav>
       </header>
 
-      {/* ////////////////////////////HEADER//////////////////////////// */}
+      {/* ///////////////////////////HEADER//////////////////////////// */}
       <div className="movie-watchlist-header">
         <h1>Movies Watchlist</h1>
         <p>

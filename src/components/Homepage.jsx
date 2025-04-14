@@ -132,10 +132,29 @@ const Homepage = () => {
               </form>
             </li>
 
-            {/* Toggleable nav-wrapper */}
+            {/* Toggle button (mobile only) */}
+            <li
+              className="nav-menu"
+              style={{ display: menuOpen ? "none" : "block" }}
+              onClick={handleMenuToggle}
+            >
+              <div className="menu">
+                <img
+                  src={navBar}
+                  width="20px"
+                  className="nav-logo"
+                  alt="menu icon"
+                />
+                <span>{t("menu")}</span>
+              </div>
+            </li>
+
+            {/* Navigation items */}
             <div
               className="nav-wrapper"
-              style={{ display: menuOpen ? "block" : "none" }}
+              style={{
+                display: menuOpen || window.innerWidth > 702 ? "flex" : "none",
+              }}
             >
               <li>
                 <img
@@ -183,23 +202,6 @@ const Homepage = () => {
                 </div>
               </li>
             </div>
-
-            {/* Toggle button */}
-            <li
-              className="nav-menu"
-              style={{ display: menuOpen ? "none" : "block" }}
-              onClick={handleMenuToggle}
-            >
-              <div className="menu">
-                <img
-                  src={navBar}
-                  width="20px"
-                  className="nav-logo"
-                  alt="menu icon"
-                />
-                <span>{t("menu")}</span>
-              </div>
-            </li>
           </ul>
         </nav>
       </header>
