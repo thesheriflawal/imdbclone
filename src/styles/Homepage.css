@@ -432,27 +432,26 @@ footer {
 }
 
 /* li.nav-menu {
-  display: none;
+  display: none; 
 } */
 
 .nav-wrapper {
-  display: flex;
+  display: none;
+  flex-direction: column;
   gap: 2rem;
 }
 
 @media screen and (min-width: 1192px) {
   .nav-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    display: flex !important;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
     text-align: left;
   }
 
-  .nav-wrapper li {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+  .nav-menu {
+    display: none !important;
   }
 }
 
@@ -508,5 +507,21 @@ footer {
 
   .movie-card {
     margin-bottom: 1rem;
+  }
+  .nav-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 1rem;
+  }
+
+  .nav-menu {
+    display: block;
+    cursor: pointer;
+  }
+
+  .nav-menu .menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 }
