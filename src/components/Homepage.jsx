@@ -19,6 +19,7 @@ import arrowLink from "../assets/arrow-up-right-from-square-solid.svg";
 import "../styles/Homepage.css";
 import Modal from "./modal/modal.jsx";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../context/AuthContext";
 
 const Homepage = () => {
   const { t, i18n } = useTranslation();
@@ -34,6 +35,7 @@ const Homepage = () => {
   const [showModal, setShowModal] = useState(false); // State for showing modal
   const [modalMessage, setModalMessage] = useState(""); // State for modal message
   const navigate = useNavigate();
+  const { user: authUser } = useAuth();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -349,7 +351,11 @@ const Homepage = () => {
 
       <footer>
         <div>
-          <button className="sign-in-access">Sign in for more access</button>
+          {!user && (
+            <button className="sign-in-access" onClick={handleSignIn}>
+              Sign in for more access
+            </button>
+          )}
           <div className="imdb-social-download-link">
             <div className="footer-socials">
               <div className="socials">

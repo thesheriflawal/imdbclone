@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; 
 import GoogleAuth from "../GoogleAuth";
 import "../styles/Auth.css";
 
@@ -14,6 +15,7 @@ const Auth = () => {
     confirmPassword: "",
   });
 
+  const { setUser } = useAuth(); 
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -31,6 +33,8 @@ const Auth = () => {
       alert("Passwords do not match!");
       return;
     }
+
+    setUser({ username: formData.username || "User" });
     alert(`${isSignup ? "Signup" : "Login"} successful`);
     navigate("/");
   };
